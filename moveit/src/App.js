@@ -2,9 +2,9 @@ import Button from './components/Button'
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <h1>React</h1>
-      <Button />
+      <Button color="red"/>
     </div>
   );
 }
