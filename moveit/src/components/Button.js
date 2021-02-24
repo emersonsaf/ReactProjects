@@ -6,8 +6,8 @@ interface ButtonProps{
 
 export default function Button(props: ButtonProps){
     return(
-        <Button style={{ backgroundColor: props.color}}>
+        <button style={{ backgroundColor: props.color}}>
             React Button
-        </Button>
+        </button>
     );
 }
