@@ -1,9 +1,6 @@
 import { useContext } from 'react';
 import style from '../styles/components/Countdown.module.css'
-import {  } from '../contexts/CountdownContext';
-
-
-let vTime = 0.1 * 60; // Tempo do contador
+import { CountdownContext } from '../contexts/CountdownContext';
 
 
 export default function Countdown() {
@@ -16,7 +13,6 @@ export default function Countdown() {
         startCountdown
     } = useContext(CountdownContext);
 
-    
     const [minuteLeft, minuteRight] = String(minutes).padStart(2, '0').split('');
     const [secondLeft, secondRight] = String(seconds).padStart(2, '0').split('');
 
