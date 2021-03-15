@@ -1,86 +1,45 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import DadosEntrega from './DadosEntrega';
+import { DadosPessoais } from './DadosPessoais';
+import DadosUsuario from './DadosUsuario';
 
-import { Button, FormControlLabel, Switch, TextField } from '@material-ui/core'
+import { Typography, Stepper, Step, StepLabel } from "@material-ui/core";
 
-export const FormularioCadatro = ({ aoEnviar, validarCPF }) => {
-    const [nome, setNome] = useState('');
-    const [sobrenome, setSobrenome] = useState('');
-    const [cpf, setCpf] = useState('');
-    const [isPromotionActive, setIsPromotionActive] = useState(true);
-    const [isNewsActive, setIsNewsActive] = useState(true);
 
-    const [errors, setErrors] = useState({cpf:{valido:true, texto:""}})
+export const FormularioCadatro = ({ aoEnviar, validacoes }) => {
+    const [etapaAtual, setEtapaAtual] = useState(0);
+    const [dadosColetados, setDados] = useState({});
 
+    useEffect(() => {
+        if(etapaAtual === formularios.length-1){
+            aoEnviar(dadosColetados);
+        }
+    })
+
+    const formularios = [
+        <DadosUsuario aoEnviar={coletarDados} validacoes={validacoes} />,
+        <DadosPessoais aoEnviar={coletarDados} validacoes={validacoes} />,
+        <DadosEntrega aoEnviar={coletarDados}  validacoes={validacoes} />,
+        <Typography variant="h5">Cadastro Finalizado!</Typography>
+    ];
+
+    function coletarDados(dados) {
+        setDados({ ...dadosColetados, ...dados });
+        proximo();
+    }
+    function proximo() {
+        setEtapaAtual(etapaAtual + 1)
+    }
     return (
-        <form
-            onSubmit={(event) => {
-                event.preventDefault();
-                aoEnviar({ nome, sobrenome, cpf, isPromotionActive, isNewsActive });
-            }}
-        >
-            <TextField
-                value={nome}
-                onChange={(event) => {
-                    setNome(event.target.value);
-                }}
-                id='nome'
-                label='Nome'
-                variant='outlined'
-                fullWidth
-                margin='normal'
-            />
+        <>
+            <Stepper activeStep={etapaAtual}>
+                <Step><StepLabel>Login</StepLabel></Step>
+                <Step><StepLabel>Pessoal</StepLabel></Step>
+                <Step><StepLabel>Entrega</StepLabel></Step>
+                <Step><StepLabel>Finalização</StepLabel></Step>
+            </Stepper>
+            {formularios[etapaAtual]}
+        </>
+    );
 
-            <TextField
-                value={sobrenome}
-                onChange={(event) => {
-
-                    setSobrenome(event.target.value);
-                }}
-                
-                id='sobrenome'
-                label='Sobrenome'
-                variant='outlined'
-                fullWidth
-                margin='normal'
-            />
-
-            <TextField
-                value={cpf}
-                onChange={(event) => {
-                    setCpf(event.target.value)
-                }}
-                onBlur={(event)=>{
-                    const ehValido = validarCPF(cpf);
-                    setErrors({cpf:ehValido})
-                }}
-                error={!errors.cpf.valido}
-                helperText={errors.cpf.texto}
-                id='cpf'
-                label='CPF'
-                variant='outlined'
-                fullWidth
-                margin='normal'
-            />
-
-            <FormControlLabel
-                label='Promoções'
-                control={<Switch checked={isPromotionActive} name='promocoes' onChange={(event) => {
-                    setIsPromotionActive(event.target.checked)
-                }} defaultChecked={isPromotionActive} color='primary' />}
-            />
-
-            <FormControlLabel
-                label='Novidades'
-                control={<Switch checked={isNewsActive} name='novidades' onChange={(event) => {
-                    setIsNewsActive(event.target.checked)
-                }} defaultChecked={isNewsActive} color='primary' />}
-            />
-            <Button
-                variant="contained"
-                color="primary"
-                type='submit'>
-                Cadastrar
-            </Button>
-        </form>
-    )
 }
