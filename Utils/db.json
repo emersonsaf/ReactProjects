@@ -1,0 +1,16 @@
+{
+  "tasks": [
+    {
+      "text": "Estudar React",
+      "day": "Março dia 7 a partir das 9:00 am",
+      "reminder": true,
+      "id": 5
+    },
+    {
+      "text": "Elaborar cronograma de estudo p/semana",
+      "day": "Até Amanhã",
+      "reminder": false,
+      "id": 7
+    }
+  ]
+}
