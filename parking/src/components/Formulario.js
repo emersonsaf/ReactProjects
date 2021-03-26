@@ -4,21 +4,21 @@ import { TextField, Button } from "@material-ui/core";
 const Formulario = ({ aoSalvar, id }) => {
 
     const [placa, setPlaca] = useState("");
-    const [hour, setHora] = useState('');
+    const [hour, setHour] = useState('');
     const [minutes, setMinutes] = useState('');
     const [seconds, setSeconds] = useState('');
-    const [dia, setDia] = useState('');
-    const [mes, setMes] = useState('');
-    const [ano, setAno] = useState('');
+    const [day, setDay] = useState('');
+    const [month, setMonth] = useState('');
+    const [year, setYear] = useState('');
 
 
     useEffect(() => {
         let vTime = new Date();
 
-        setAno(vTime.getFullYear().toString())
-        setMes((vTime.getUTCMonth() + 1).toString())
-        setDia(vTime.getUTCDate().toString())
-        setHora(vTime.getHours().toString())
+        setYear(vTime.getFullYear().toString())
+        setMonth((vTime.getUTCMonth() + 1).toString())
+        setDay(vTime.getUTCDate().toString())
+        setHour(vTime.getHours().toString())
         setMinutes((vTime.getMinutes()).toString())
         setSeconds(vTime.getSeconds().toString())
     }, [])
@@ -26,7 +26,7 @@ const Formulario = ({ aoSalvar, id }) => {
     return (
         <form
             onSubmit={(event) => {
-                aoSalvar({ id, placa, hour, minutes, seconds, dia, mes, ano })
+                aoSalvar({ id, placa, hour, minutes, seconds, day, month, year })
             }}
         >
             <TextField

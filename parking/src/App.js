@@ -51,7 +51,7 @@ const useStyles = makeStyles({
 });
 
 
-const url = 'http://localhost:5000/carros'
+const url = 'http://localhost:5000/veicles'
 
 
 function App() {
@@ -61,7 +61,7 @@ function App() {
   const [veicles, setVeicles] = useState([])
 
   useEffect(() => {
-    busca(`/carros`, setVeicles)
+    busca(`/veicles`, setVeicles)
   }, [])
 
   const aoSalvar = async (placa) => {
@@ -110,7 +110,7 @@ function App() {
                         {veicle.placa}
                       </StyledTableCell>
                       <StyledTableCell align="right">
-                        {`${veicle.dia}/${veicle.mes}/${veicle.ano}`}
+                        {`${veicle.day}/${veicle.month}/${veicle.year}`}
                       </StyledTableCell>
                       <StyledTableCell align="right">
                         {(veicle.hour < 10) ? `0${veicle.hour}` : veicle.hour}
