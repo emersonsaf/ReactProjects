@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { TextField, Button } from "@material-ui/core";
 
 const Formulario = ({ aoSalvar, id }) => {
-
+    const [date, setDate] =  useState()
     const [placa, setPlaca] = useState("");
     const [hour, setHour] = useState('');
     const [minutes, setMinutes] = useState('');
@@ -10,11 +10,13 @@ const Formulario = ({ aoSalvar, id }) => {
     const [day, setDay] = useState('');
     const [month, setMonth] = useState('');
     const [year, setYear] = useState('');
+    const [isActive, setIsActive] = useState(true);
+    const [idDeleted, setIsDeleted] = useState(false);
 
 
     useEffect(() => {
         let vTime = new Date();
-
+        setDate(vTime)
         setYear(vTime.getFullYear().toString())
         setMonth((vTime.getUTCMonth() + 1).toString())
         setDay(vTime.getUTCDate().toString())
@@ -26,7 +28,7 @@ const Formulario = ({ aoSalvar, id }) => {
     return (
         <form
             onSubmit={(event) => {
-                aoSalvar({ id, placa, hour, minutes, seconds, day, month, year })
+                aoSalvar({ id, placa, hour, minutes, seconds, day, month, year ,date, isActive, idDeleted })
             }}
         >
             <TextField
@@ -42,7 +44,7 @@ const Formulario = ({ aoSalvar, id }) => {
                 required
             />
 
-            <Button type='submit' variant='contained' color='primary' fullWidth style={{marginBottom: 10}} size='small' >
+            <Button type='submit' variant='contained' color='primary' style={{marginBottom: 10}} size='small' >
                 Cadastrar Veículo
             </Button>
 

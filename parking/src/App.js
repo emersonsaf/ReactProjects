@@ -1,7 +1,6 @@
 import './App.css';
 import { useEffect, useState } from 'react';
 
-//import Button from './components/Button';
 import Formulario from './components/Formulario';
 
 import { busca } from './api/api'
@@ -20,6 +19,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 import Navbar from './components/Navbar';
 import { ButtonBase, Button } from '@material-ui/core';
+import { confirmAlert } from 'react-confirm-alert';
 
 
 const StyledTableCell = withStyles((theme: Theme) =>
@@ -57,12 +57,11 @@ const url = 'http://localhost:5000/veicles'
 function App() {
 
   const [isActive, setIsActive] = useState(false)
-
   const [veicles, setVeicles] = useState([])
 
   useEffect(() => {
     busca(`/veicles`, setVeicles)
-  }, [])
+  }, [isActive])
 
   const aoSalvar = async (placa) => {
     const res = await fetch(`${url}`, {
@@ -76,12 +75,83 @@ function App() {
     setVeicles([...veicles, data])
   }
 
+  const fetchVeicle = async (id) => {
+    const res = await fetch(`http://localhost:5000/veicles/${id}`)
+    const data = await res.json()
+    return data
+  }
 
   const onClick = () => {
     return (
       setIsActive(!isActive)
     )
   }
+
+  const onDelete = async (id) => {
+    const veicleDeleted = await fetchVeicle(id)
+    const updVeicle = { ...veicleDeleted, isDeleted: !veicleDeleted.isDeleted }
+
+    const res = await fetch(`http://localhost:5000/veicles/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(updVeicle)
+    })
+
+    const data = await res.json()
+
+    setVeicles(
+      veicles.map((veicle) =>
+        veicle.id === id ? { ...veicle, isDeleted: data.isDeleted } : veicle
+      )
+    )
+
+
+  }
+
+  const inativeItem = async (id) => {
+    const veicleInative = await fetchVeicle(id)
+    const updVeicle = { ...veicleInative, isActive: !veicleInative.isActive }
+
+    const res = await fetch(`http://localhost:5000/veicles/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(updVeicle)
+    })
+
+    const data = await res.json()
+
+    setVeicles(
+      veicles.map((veicle) =>
+        veicle.id === id ? { ...veicle, isActive: data.isActive } : veicle
+      )
+    )
+  }
+
+  const valorAPagar = (minutos) => {
+    const valorPorHora = 6
+    const hora = Math.trunc(minutos / 60)
+
+    alert(`Valor Total a Pagar é de RS ${valorPorHora*hora},00`)
+  }
+
+  const onFinish = (veicle) => {
+    if (veicle.isActive === true) {
+      const startDate = new Date(veicle.date)
+      const timeEnd = new Date()
+
+      const diff = Math.abs(timeEnd - startDate);
+      const minutes = Math.ceil((diff / (1000 * 60)))
+      const hour = Math.ceil((diff / (1000 * 60 * 60)) - 1)
+
+      inativeItem(veicle.id)
+      valorAPagar(minutes)
+    }
+  }
+
 
   const classes = useStyles();
 
@@ -97,6 +167,7 @@ function App() {
               <Table className={classes.table} aria-label="customized table">
                 <TableHead>
                   <TableRow>
+                    <StyledTableCell>Status</StyledTableCell>
                     <StyledTableCell>Placa</StyledTableCell>
                     <StyledTableCell align="right">Data</StyledTableCell>
                     <StyledTableCell align="right">Horario de Entrada</StyledTableCell>
@@ -104,8 +175,13 @@ function App() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {veicles.map((veicle) => (
+                  {veicles.filter((veicle) => veicle.isDeleted !== true).map((veicle) => (
                     <StyledTableRow key={veicle.id}>
+                      <StyledTableCell component="th" scope="row" style={{ color: veicle.isActive ? 'RED' : 'GREEN' }}>
+                        {
+                          !veicle.isActive ? 'LIBERADO' : 'PENDENTE'
+                        }
+                      </StyledTableCell>
                       <StyledTableCell component="th" scope="row">
                         {veicle.placa}
                       </StyledTableCell>
@@ -124,7 +200,12 @@ function App() {
                           key={veicle.id}
                           focusVisibleClassName={classes.focusVisible}
                         >
-                          <CheckCircleIcon color='primary' />
+                          <CheckCircleIcon onClick={() => {
+                            if (window.confirm(`Você deseja finalizar o período do veículo ${veicle.placa}`))
+                              onFinish(veicle)
+
+                          }
+                          } color='primary' />
                         </ButtonBase>
 
                         <ButtonBase
@@ -132,7 +213,13 @@ function App() {
                           key={veicle.id}
                           focusVisibleClassName={classes.focusVisible}
                         >
-                          <CancelIcon color='error' />
+                          <CancelIcon
+                            onClick={() => {
+                              if (window.confirm(`Você deseja excluir o registro do veículo ${veicle.placa}`))
+                                onDelete(veicle.id)
+                            }
+                            }
+                            color='error' />
                         </ButtonBase>
 
                       </StyledTableCell>
@@ -145,18 +232,16 @@ function App() {
           : <Formulario aoSalvar={aoSalvar} />
         }
         <div>
-        <Button onClick={onClick} type='submit' variant='contained' color='primary' fullWidth >
-                {
-                  !isActive ? `Cadastrar Veículo` : `Voltar`
-                }
-            </Button>
+          <Button onClick={onClick} type='submit' variant='contained' color={!isActive ? 'primary' : 'default'} >
+            {
+              !isActive ? `Cadastrar Veículo` : `Voltar`
+            }
+          </Button>
+        </div>
       </div>
-      </div>
-      
+
     </div>
   );
 }
-
-
 
 export default App;

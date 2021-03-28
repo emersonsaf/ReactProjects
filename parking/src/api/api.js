@@ -8,5 +8,4 @@ export const api = axios.create({
 export const busca = async (url, setDados) => {
     const response = await api.get(url)
     setDados(response.data)
-    console.log(response.data)
 }
