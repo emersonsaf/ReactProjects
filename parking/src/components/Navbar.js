@@ -8,6 +8,8 @@ import Button from '@material-ui/core/Button';
 
 
 import LocalParkingIcon from '@material-ui/icons/LocalParking';
+import NotListedLocationIcon from '@material-ui/icons/NotListedLocation';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -32,7 +34,15 @@ const Navbar = () => {
         <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar>
-                    <LocalParkingIcon />
+                    <div>
+
+                    <Link to='/' style={{ textDecoration: 'none', color: 'white' }}>
+                        <LocalParkingIcon />
+                    </Link>
+                    <Link to='/veiculos' style={{ textDecoration: 'none', color: 'white' }}>
+                        <NotListedLocationIcon />
+                    </Link>
+                    </div>
                     <Typography variant="h6" className={classes.title}>
                         Garage System
                     </Typography>

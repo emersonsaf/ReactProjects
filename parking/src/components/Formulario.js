@@ -11,7 +11,7 @@ const Formulario = ({ aoSalvar, id }) => {
     const [month, setMonth] = useState('');
     const [year, setYear] = useState('');
     const [isActive, setIsActive] = useState(true);
-    const [idDeleted, setIsDeleted] = useState(false);
+    const [isDeleted, setIsDeleted] = useState(false);
 
 
     useEffect(() => {
@@ -28,7 +28,7 @@ const Formulario = ({ aoSalvar, id }) => {
     return (
         <form
             onSubmit={(event) => {
-                aoSalvar({ id, placa, hour, minutes, seconds, day, month, year ,date, isActive, idDeleted })
+                aoSalvar({ id, placa, hour, minutes, seconds, day, month, year ,date, isActive, isDeleted })
             }}
         >
             <TextField

@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+export const url = 'http://localhost:5000/veicles'
+
 
 export const api = axios.create({
     baseURL: 'http://localhost:5000'
