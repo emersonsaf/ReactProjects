@@ -46,7 +46,9 @@ const Navbar = () => {
                     <Typography variant="h6" className={classes.title}>
                         Garage System
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    <a href='/login' style={{ textDecoration: 'none', color: 'white' }}>
+                        <Button color="inherit">Login</Button>
+                    </a>
                 </Toolbar>
             </AppBar>
         </div>

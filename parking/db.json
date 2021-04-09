@@ -22,7 +22,7 @@
       "month": "4",
       "year": "2021",
       "date": "2021-04-01T00:15:25.377Z",
-      "isActive": true,
+      "isActive": false,
       "isDeleted": false,
       "id": 2
     },
@@ -38,6 +38,39 @@
       "isActive": true,
       "isDeleted": true,
       "id": 3
+    },
+    {
+      "placa": "TES3156",
+      "hour": "17",
+      "minutes": "19",
+      "seconds": "20",
+      "day": "2",
+      "month": "4",
+      "year": "2021",
+      "date": "2021-04-02T20:19:20.237Z",
+      "isActive": false,
+      "isDeleted": false,
+      "id": 4
+    },
+    {
+      "placa": "NOW1584",
+      "hour": "17",
+      "minutes": "3",
+      "seconds": "2",
+      "day": "3",
+      "month": "4",
+      "year": "2021",
+      "date": "2021-04-03T20:03:02.843Z",
+      "isActive": true,
+      "isDeleted": false,
+      "id": 5
+    }
+  ],
+  "users": [
+    {
+      "username": "emersonfilho",
+      "password": "123",
+      "email": "emersonfilho@teste.com"
     }
   ]
 }
